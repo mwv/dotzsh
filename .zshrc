@@ -8,12 +8,15 @@ DISABLE_CORRECTION="true"
 #
 alias pu='pushd'
 alias po='popd'
-alias em='emacs'
+# alias em='TERM=xterm-256color emacs -nw'
+alias ed='TERM=xterm-256color emacs -nw --daemon'
+alias em='TERM=xterm-256color emacsclient'
 alias ll='ls -lAFh'
-export GREP_OPTIONS='--color=auto'
-export GREP_COLOR='1;32'
-alias grep='grep --color'
+export EDITOR="TERM=xterm-256color emacsclient"
+alias grep='grep --color=auto'
 alias sgrep='grep -R -n -H -C 5 --exlude-dir={.git}'
+alias ob='ssh -A -t mversteegh@129.199.81.135 ssh -A -t mwv@oberon'
+alias obt='ssh -A -t mversteegh@129.199.81.135 ssh -A -t mwv@oberon tmux attach -d'
 
 alias -g H='| head'
 alias -g T='| tail'
@@ -30,6 +33,12 @@ alias man='nocorrect man'
 alias mv='nocorrect mv'
 alias mkdir='nocorrect mkdir'
 alias sudo='nocorrect sudo'
+alias py='python'
+alias py2='python2'
+alias ipy='ipython'
+alias ipy2='ipython'
+alias tmux='TERM=xterm-256color tmux'
+
 
 # Changing/making/removing directory
 setopt auto_name_dirs
@@ -131,13 +140,13 @@ zstyle ':completion::complete:*' cache-path $ZSH/cache/
 
 # Don't complete uninteresting users
 zstyle ':completion:*:*:*:users' ignored-patterns \
-	adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
-	dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
-	hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
-	mailman mailnull mldonkey mysql nagios \
-	named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
-	operator pcap postfix postgres privoxy pulse pvm quagga radvd \
-	rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs
+    adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
+    dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
+    hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
+    mailman mailnull mldonkey mysql nagios \
+    named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
+    operator pcap postfix postgres privoxy pulse pvm quagga radvd \
+    rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs
 
 # ... unless we really want to.
 zstyle '*' single-ignored show
@@ -184,19 +193,19 @@ parse_git_dirty() {
 git_remote_status() {
     remote=${$(command git rev-parse --verify ${hook_com[branch]}@{upstream} --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
     if [[ -n ${remote} ]] ; then
-	ahead=$(command git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
-	behind=$(command git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
+    ahead=$(command git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
+    behind=$(command git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
 
-	if [ $ahead -eq 0 ] && [ $behind -gt 0 ]
-	then
-	    echo "$ZSH_THEME_GIT_PROMPT_BEHIND_REMOTE"
-	elif [ $ahead -gt 0 ] && [ $behind -eq 0 ]
-	then
-	    echo "$ZSH_THEME_GIT_PROMPT_AHEAD_REMOTE"
-	elif [ $ahead -gt 0 ] && [ $behind -gt 0 ]
-	then
-	    echo "$ZSH_THEME_GIT_PROMPT_DIVERGED_REMOTE"
-	fi
+    if [ $ahead -eq 0 ] && [ $behind -gt 0 ]
+    then
+        echo "$ZSH_THEME_GIT_PROMPT_BEHIND_REMOTE"
+    elif [ $ahead -gt 0 ] && [ $behind -eq 0 ]
+    then
+        echo "$ZSH_THEME_GIT_PROMPT_AHEAD_REMOTE"
+    elif [ $ahead -gt 0 ] && [ $behind -gt 0 ]
+    then
+        echo "$ZSH_THEME_GIT_PROMPT_DIVERGED_REMOTE"
+    fi
     fi
 }
 
@@ -537,14 +546,14 @@ alias gignored='git ls-files -v | grep "^[[:lower:]]"'
 #
 man() {
     env \
-	LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-	LESS_TERMCAP_md=$(printf "\e[1;31m") \
-	LESS_TERMCAP_me=$(printf "\e[0m") \
-	LESS_TERMCAP_se=$(printf "\e[0m") \
-	LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-	LESS_TERMCAP_ue=$(printf "\e[0m") \
-	LESS_TERMCAP_us=$(printf "\e[1;32m") \
-	man "$@"
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
 }
 
 # Figure out the SHORT hostname
@@ -564,9 +573,12 @@ compinit -i -d "${ZSH_COMPDUMP}"
 
 
 
-export PATH=$HOME/.local/bin:/usr/local/bin:/home/mwv/src/srilm/bin/i686-m64:$PATH
+export PATH=$HOME/.local/bin:/usr/local/bin:$HOME/.cabal/bin:$HOME/src/srilm/bin/i686-m64:$PATH
 export MANPATH=/home/mwv/src/srilm/man:$MANPATH
-LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+
+# sonic visualiser plugins
+export VAMP_PATH=$HOME/.vamp:/usr/local/lib/vamp:/usr/lib/vamp
 
 # enable autojump
 [[ -s ~/.autojump/etc/profile.d/autojump.zsh ]] && . ~/.autojump/etc/profile.d/autojump.zsh
@@ -577,11 +589,11 @@ setopt PROMPT_SUBST
 function virtualenv_prompt_info() {
   if [ -n "$VIRTUAL_ENV" ]; then
       if [ -f "$VIRTUAL_ENV/__name__" ]; then
-	  local name=`cat $VIRTUAL_ENV/__name__`
+      local name=`cat $VIRTUAL_ENV/__name__`
       elif [ `basename $VIRTUAL_ENV` = "__" ]; then
-	  local name=$(basename $(dirname $VIRTUAL_ENV))
+      local name=$(basename $(dirname $VIRTUAL_ENV))
       else
-	  local name=$(basename $VIRTUAL_ENV)
+      local name=$(basename $VIRTUAL_ENV)
       fi
       echo "$ZSH_THEME_VIRTUAL_ENV_PROMPT_PREFIX$name$ZSH_THEME_VIRTUAL_ENV_PROMPT_SUFFIX"
   fi
