@@ -8,15 +8,9 @@ DISABLE_CORRECTION="true"
 #
 alias pu='pushd'
 alias po='popd'
-# alias em='TERM=xterm-256color emacs -nw'
-alias ed='TERM=xterm-256color emacs -nw --daemon'
-alias em='TERM=xterm-256color emacsclient'
 alias ll='ls -lAFh'
-export EDITOR="TERM=xterm-256color emacsclient"
 alias grep='grep --color=auto'
 alias sgrep='grep -R -n -H -C 5 --exlude-dir={.git}'
-alias ob='ssh -A -t mversteegh@129.199.81.135 ssh -A -t mwv@oberon'
-alias obt='ssh -A -t mversteegh@129.199.81.135 ssh -A -t mwv@oberon tmux attach -d'
 
 alias -g H='| head'
 alias -g T='| tail'
@@ -570,15 +564,6 @@ ZSH_COMPDUMP="${ZDOTDIR:-${HOME}}/.zcompdump-${SHORT_HOST}-${ZSH_VERSION}"
 # Load and run compinit
 autoload -U compinit
 compinit -i -d "${ZSH_COMPDUMP}"
-
-
-
-export PATH=$HOME/.local/bin:/usr/local/bin:$HOME/.cabal/bin:$HOME/src/srilm/bin/i686-m64:$PATH
-export MANPATH=/home/mwv/src/srilm/man:$MANPATH
-export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
-
-# sonic visualiser plugins
-export VAMP_PATH=$HOME/.vamp:/usr/local/lib/vamp:/usr/lib/vamp
 
 # enable autojump
 [[ -s ~/.autojump/etc/profile.d/autojump.zsh ]] && . ~/.autojump/etc/profile.d/autojump.zsh
