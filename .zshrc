@@ -33,6 +33,7 @@ alias ipy='ipython'
 alias ipy2='ipython'
 alias tmux='TERM=xterm-256color tmux'
 
+export EDITOR='vim'
 
 # Changing/making/removing directory
 setopt auto_name_dirs
@@ -606,3 +607,4 @@ local venv_info='$(virtualenv_prompt_info)'
 PROMPT="╭─${user_host} ${current_dir} ${venv_info} ${git_branch}
 ╰─%B➤%b "
 RPS1="${return_code}"
+
